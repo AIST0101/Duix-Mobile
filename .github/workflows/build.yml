@@ -24,12 +24,17 @@ jobs:
         echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
         yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1
         $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2" "ndk;25.1.8937393" > /dev/null 2>&1
+
+    - name: Install Gradle
+      run: |
+        wget -q https://services.gradle.org/distributions/gradle-8.5-bin.zip
+        unzip -q gradle-8.5-bin.zip
+        echo "$PWD/gradle-8.5/bin" >> $GITHUB_PATH
         
     - name: Build with Gradle
       run: |
         cd duix-android/dh_aigc_android
-        chmod +x gradlew
-        ./gradlew assembleDebug
+        gradle assembleDebug
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
